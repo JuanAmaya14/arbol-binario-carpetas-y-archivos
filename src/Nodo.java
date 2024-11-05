@@ -1,7 +1,6 @@
-class Nodo {
+public class Nodo {
     private String nombre;
     private String tipo;
-    //Conecta con otros dos nodos
     private Nodo izquierda, derecha;
 
     public Nodo(String nombre, String tipo) {
@@ -29,15 +28,7 @@ class Nodo {
         return nombre;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
     public String getTipo() {
         return tipo;
-    }
-
-    public void setTipo(String tipo) {
-        this.tipo = tipo;
     }
 }

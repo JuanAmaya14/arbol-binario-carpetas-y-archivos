@@ -1,30 +1,52 @@
 import java.util.Objects;
 
-class Arbol {
+public class Arbol {
     private Nodo raiz;
 
     public Arbol() {
         this.raiz = null;
     }
 
-    /**
-     * Verifica si existe un archivo o carpeta en el arbol
-     * Recibe el nombre del archivo o carpeta y devuelve true si existe, false si no
-     */
+    // Verifica si existe un archivo o carpeta en el árbol
     public boolean existe(String busqueda) {
         return existe(this.raiz, busqueda);
     }
 
-    /**
-     * Metodo recursivo para buscar un nodo en el arbol
-     * Recibe el nodo actual y el nombre a buscar, devolviendo true si existe
-     */
+    // Inserta un nuevo archivo o carpeta, pidiendo seleccion de carpeta
+    public void insertar(String nombre, String tipo, String nombreCarpeta) {
+        if (this.raiz == null) {
+            if (tipo.equals("Carpeta")) {
+                this.raiz = new Nodo(nombre, tipo);
+            } else {
+                System.out.println("Primero debe insertar una carpeta raiz.");
+            }
+        } else {
+            Nodo carpetaSeleccionada = buscarCarpeta(this.raiz, nombreCarpeta);
+            if (carpetaSeleccionada == null || !carpetaSeleccionada.getTipo().equals("Carpeta")) {
+                System.out.println("La carpeta especificada no existe.");
+                return;
+            }
+            insertarEnCarpeta(carpetaSeleccionada, nombre, tipo);
+        }
+    }
+
+    // Muestra el árbol en orden alfabetico.
+    public void ordenAlfabetico() {
+        this.ordenAlfabetico(this.raiz);
+    }
+
+    // Cuenta la cantidad de archivos y carpetas en el árbol.
+    public int contarNodos() {
+        return contarNodos(this.raiz);
+    }
+
+    // Métodos privados
+
+    // Metodo recursivo para buscar un nodo en el árbol
     private boolean existe(Nodo nodo, String busqueda) {
         if (nodo == null) {
             return false;
         }
-        // Compara dos cadenas de texto y determina si busca a la izquierda (< 0)
-        // o derecha (>= 0)
         if (Objects.equals(nodo.getNombre(), busqueda)) {
             return true;
         } else if (busqueda.compareTo(nodo.getNombre()) < 0) {
@@ -34,51 +56,73 @@ class Arbol {
         }
     }
 
-    /**
-     * Inserta un nuevo archivo o carpeta en el arbol alfabeticamente
-     * Si el arbol esta vacio, lo establece como raiz
-     */
-    public void insertar(String nombre, String tipo) {
-        if (this.raiz == null) {
-            this.raiz = new Nodo(nombre, tipo);
+    // Inserta en una carpeta seleccionada si hay espacio disponible
+    private void insertarEnCarpeta(Nodo carpeta, String nombre, String tipo) {
+        if (carpeta.getIzquierda() != null && carpeta.getDerecha() != null) {
+            System.out.println("La carpeta esta llena");
+            return;
+        }
+        if ((tipo.equals("Archivo") && archivoExiste(nombre)) || (tipo.equals("Carpeta") && carpetaExiste(nombre))) {
+            System.out.println("Ya existe un " + tipo + " con el mismo nombre");
+            return;
+        }
+
+        Nodo nuevoNodo = new Nodo(nombre, tipo);
+        if (carpeta.getIzquierda() == null) {
+            carpeta.setIzquierda(nuevoNodo);
         } else {
-            this.insertar(this.raiz, nombre, tipo);
+            carpeta.setDerecha(nuevoNodo);
         }
     }
 
-    /**
-     * Metodo recursivo para insertar un nuevo nodo en el arbol
-     * Recibe el nodo actual, nombre y tipo del nodo a insertar
-     */
-    private void insertar(Nodo padre, String nombre, String tipo) {
-        // Compara dos cadenas de texto y determina si va a la derecha (> 0)
-        // o izquierda (<= 0)
-        if (nombre.compareTo(padre.getNombre()) > 0) {
-            if (padre.getDerecha() == null) {
-                padre.setDerecha(new Nodo(nombre, tipo));
-            } else {
-                this.insertar(padre.getDerecha(), nombre, tipo);
-            }
-        } else {
-            if (padre.getIzquierda() == null) {
-                padre.setIzquierda(new Nodo(nombre, tipo));
-            } else {
-                this.insertar(padre.getIzquierda(), nombre, tipo);
-            }
+    // Metodo para buscar una carpeta especifica
+    private Nodo buscarCarpeta(Nodo nodo, String nombreCarpeta) {
+        if (nodo == null) {
+            return null;
         }
+        if (nodo.getNombre().equals(nombreCarpeta) && nodo.getTipo().equals("Carpeta")) {
+            return nodo;
+        }
+
+        Nodo izquierda = buscarCarpeta(nodo.getIzquierda(), nombreCarpeta);
+        if (izquierda != null) {
+            return izquierda;
+        }
+
+        return buscarCarpeta(nodo.getDerecha(), nombreCarpeta);
     }
 
-    /**
-     * Muestra el arbol en orden alfabetico.
-     */
-    public void ordenAlfabetico() {
-        this.ordenAlfabetico(this.raiz);
+    // Metodos para verificar duplicados en archivos y carpetas
+
+    private boolean archivoExiste(String nombre) {
+        return archivoExiste(this.raiz, nombre);
     }
 
-    /**
-     * Mostrar el arbol en orden alfabetico.
-     * Muestra el nodo actual empezando por el subarbol izquierdo y despues el derecho
-     */
+    private boolean carpetaExiste(String nombre) {
+        return carpetaExiste(this.raiz, nombre);
+    }
+
+    private boolean archivoExiste(Nodo nodo, String nombre) {
+        if (nodo == null) {
+            return false;
+        }
+        if (nodo.getTipo().equals("Archivo") && nodo.getNombre().equals(nombre)) {
+            return true;
+        }
+        return archivoExiste(nodo.getIzquierda(), nombre) || archivoExiste(nodo.getDerecha(), nombre);
+    }
+
+    private boolean carpetaExiste(Nodo nodo, String nombre) {
+        if (nodo == null) {
+            return false;
+        }
+        if (nodo.getTipo().equals("Carpeta") && nodo.getNombre().equals(nombre)) {
+            return true;
+        }
+        return carpetaExiste(nodo.getIzquierda(), nombre) || carpetaExiste(nodo.getDerecha(), nombre);
+    }
+
+    // Muestra el nodo actual empezando por el subarbol izquierdo y despues el derecho
     private void ordenAlfabetico(Nodo nodo) {
         if (nodo != null) {
             ordenAlfabetico(nodo.getIzquierda());
@@ -87,18 +131,6 @@ class Arbol {
         }
     }
 
-    /**
-     * Cuenta la cantidad de archivos y carpetas en el arbol.
-     * Devuelve el numero total de nodos en el arbol.
-     */
-    public int contarNodos() {
-        return contarNodos(this.raiz);
-    }
-
-    /**
-     * Contar los nodos en el arbol.
-     * Suma uno por el nodo actual y recorre los subarboles izquierdo y derecho.
-     */
     private int contarNodos(Nodo nodo) {
         if (nodo == null) {
             return 0;

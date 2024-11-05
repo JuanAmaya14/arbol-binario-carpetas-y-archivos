@@ -5,33 +5,28 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
         Arbol arbol = new Arbol();
 
+        // Inserciones para prueba rápida
+        arbol.insertar("Carpeta1", "Carpeta", ""); // Insertar Carpeta1 como raíz
+        arbol.insertar("Carpeta2", "Carpeta", "Carpeta1"); // Insertar Carpeta2 dentro de Carpeta1
+        arbol.insertar("Archivo1", "Archivo", "Carpeta1"); // Insertar Archivo1 dentro de Carpeta1
+        arbol.insertar("Archivo2", "Archivo", "Carpeta2"); // Insertar Archivo2 dentro de Carpeta2
+        arbol.insertar("Carpeta3", "Carpeta", "Carpeta2"); // Insertar Carpeta3 dentro de Carpeta2
+        arbol.insertar("Archivo3", "Archivo", "Carpeta3"); // Insertar Archivo3 dentro de Carpeta3
+
         Menu(scanner, arbol);
-
-//        arbol.insertar("Carpeta1", "Carpeta");
-//        arbol.insertar("Carpeta2", "Carpeta");
-//        arbol.insertar("Archivo1", "Archivo");
-//        arbol.insertar("Archivo2", "Archivo");
-//        arbol.insertar("Carpeta3", "Carpeta");
-//        arbol.insertar("Archivo3", "Archivo");
-
-        System.out.println("¿Existe 'Archivo2'? " + arbol.existe("Archivo2"));
     }
 
     private static void Menu(Scanner scanner, Arbol arbol) {
-
         int opcion;
         do {
             System.out.println("\nMENU");
-            System.out.println("1. Insertar archivo o carpeta" +
-                    "\n2. Buscar un archivo" +
+            System.out.println("1. Insertar archivo o carpeta\n2. Buscar un archivo" +
                     "\n3. Todos los archivos y carpetas en orden alfabetico" +
-                    "\n4. Total de archivos y carpertas" +
-                    "\n5. Salir");
+                    "\n4. Total de archivos y carpetas\n5. Salir");
             System.out.print("Ingrese una opcion: ");
             opcion = scanner.nextInt();
 
             switch (opcion) {
-
                 case 1:
                     preInsertado(scanner, arbol);
                     break;
@@ -39,7 +34,7 @@ public class Main {
                     buscarArchivo(scanner, arbol);
                     break;
                 case 3:
-                    System.out.println("Contenido del sistema en orden alfabético:");
+                    System.out.println("Contenido del sistema en orden alfabetico:");
                     arbol.ordenAlfabetico();
                     break;
                 case 4:
@@ -51,62 +46,43 @@ public class Main {
                 default:
                     System.out.println("Esa opcion no existe.");
                     break;
-
             }
-
         } while (opcion != 5);
-
     }
 
     private static void buscarArchivo(Scanner scanner, Arbol arbol) {
-
         System.out.println("\nBUSCAR ARCHIVO");
         System.out.print("Nombre de archivo a buscar: ");
         String nombre = scanner.next();
-
-        if (arbol.existe(nombre)){
-
+        if (arbol.existe(nombre)) {
             System.out.println("El archivo \"" + nombre + "\" existe");
-
         } else {
-
             System.out.println("El archivo \"" + nombre + "\" no existe");
-
         }
-
     }
 
     private static void preInsertado(Scanner scanner, Arbol arbol) {
-
         System.out.println("\nINSERTAR");
         System.out.print("Nombre: ");
         String nombre = scanner.next();
         String tipo = "";
+        String nombreCarpeta;
         int tipoOpcion;
 
         do {
-            System.out.println("\nTipo de archivo" +
-                    "\n1. archivo" +
-                    "\n2. carpeta");
-            System.out.print("Ingrese una opcion: ");
+            System.out.println("\nTipo de archivo\n1. archivo\n2. carpeta");
             tipoOpcion = scanner.nextInt();
-
-            switch (tipoOpcion){
-
-                case 1:
-                    tipo = "Archivo";
-                    break;
-                case 2:
-                    tipo = "Carpeta";
-                    break;
-                default:
-                    System.out.println("Este tipo de dato no existe");
-                    break;
-                
+            if (tipoOpcion == 1) {
+                tipo = "Archivo";
+            } else if (tipoOpcion == 2) {
+                tipo = "Carpeta";
+            } else {
+                System.out.println("Este tipo de dato no existe");
             }
-
         } while (tipoOpcion != 1 && tipoOpcion != 2);
 
-        arbol.insertar(nombre, tipo);
+        System.out.print("Nombre de la carpeta donde se insertara: ");
+        nombreCarpeta = scanner.next();
+        arbol.insertar(nombre, tipo, nombreCarpeta);
     }
 }

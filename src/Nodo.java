@@ -1,6 +1,7 @@
 class Nodo {
     private String nombre;
     private String tipo;
+    //Conecta con otros dos nodos
     private Nodo izquierda, derecha;
 
     public Nodo(String nombre, String tipo) {

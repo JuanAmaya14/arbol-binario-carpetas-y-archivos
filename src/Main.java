@@ -11,7 +11,7 @@ public class Main {
         arbol.insertar("Archivo3", "Archivo");
 
         System.out.println("Contenido del sistema en orden alfabético:");
-        arbol.inorden();
+        arbol.ordenAlfabetico();
 
         System.out.println("\nTotal de archivos y carpetas: " + arbol.contarNodos());
         System.out.println("¿Existe 'Archivo2'? " + arbol.existe("Archivo2"));

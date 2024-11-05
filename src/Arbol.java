@@ -69,21 +69,21 @@ class Arbol {
     }
 
     /**
-     * Muestra el arbol en orden alfabetico (inorden).
+     * Muestra el arbol en orden alfabetico.
      */
-    public void inorden() {
-        this.inorden(this.raiz);
+    public void ordenAlfabetico() {
+        this.ordenAlfabetico(this.raiz);
     }
 
     /**
-     * Metodo recursivo para mostrar el arbol en orden alfabetico.
+     * Mostrar el arbol en orden alfabetico.
      * Muestra el nodo actual empezando por el subarbol izquierdo y despues el derecho
      */
-    private void inorden(Nodo nodo) {
+    private void ordenAlfabetico(Nodo nodo) {
         if (nodo != null) {
-            inorden(nodo.getIzquierda());
+            ordenAlfabetico(nodo.getIzquierda());
             System.out.println(nodo.getNombre() + " (" + nodo.getTipo() + ")");
-            inorden(nodo.getDerecha());
+            ordenAlfabetico(nodo.getDerecha());
         }
     }
 
@@ -96,7 +96,7 @@ class Arbol {
     }
 
     /**
-     * Metodo recursivo para contar los nodos en el arbol.
+     * Contar los nodos en el arbol.
      * Suma uno por el nodo actual y recorre los subarboles izquierdo y derecho.
      */
     private int contarNodos(Nodo nodo) {

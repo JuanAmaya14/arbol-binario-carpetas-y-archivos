@@ -8,10 +8,10 @@ public class Main {
         // Inserciones para prueba rápida
         arbol.insertar("Carpeta1", "Carpeta", ""); // Insertar Carpeta1 como raíz
         arbol.insertar("Carpeta2", "Carpeta", "Carpeta1"); // Insertar Carpeta2 dentro de Carpeta1
-        arbol.insertar("Archivo1", "Archivo", "Carpeta1"); // Insertar Archivo1 dentro de Carpeta1
-        arbol.insertar("Archivo2", "Archivo", "Carpeta2"); // Insertar Archivo2 dentro de Carpeta2
+        arbol.insertar("perro", "Archivo", "Carpeta1"); // Insertar Archivo1 dentro de Carpeta1
+        arbol.insertar("gato", "Archivo", "Carpeta2"); // Insertar Archivo2 dentro de Carpeta2
         arbol.insertar("Carpeta3", "Carpeta", "Carpeta2"); // Insertar Carpeta3 dentro de Carpeta2
-        arbol.insertar("Archivo3", "Archivo", "Carpeta3"); // Insertar Archivo3 dentro de Carpeta3
+        arbol.insertar("documento", "Archivo", "Carpeta3"); // Insertar Archivo3 dentro de Carpeta3
 
         Menu(scanner, arbol);
     }
@@ -20,9 +20,11 @@ public class Main {
         int opcion;
         do {
             System.out.println("\nMENU");
-            System.out.println("1. Insertar archivo o carpeta\n2. Buscar un archivo" +
+            System.out.println("1. Insertar archivo o carpeta" +
+                    "\n2. Buscar un archivo" +
                     "\n3. Todos los archivos y carpetas en orden alfabetico" +
-                    "\n4. Total de archivos y carpetas\n5. Salir");
+                    "\n4. Total de archivos y carpetas" +
+                    "\n5. Salir");
             System.out.print("Ingrese una opcion: ");
             opcion = scanner.nextInt();
 
@@ -34,7 +36,7 @@ public class Main {
                     buscarArchivo(scanner, arbol);
                     break;
                 case 3:
-                    System.out.println("Contenido del sistema en orden alfabetico:");
+                    System.out.println("Contenido del arbol en orden alfabetico:");
                     arbol.ordenAlfabetico();
                     break;
                 case 4:
@@ -63,21 +65,30 @@ public class Main {
 
     private static void preInsertado(Scanner scanner, Arbol arbol) {
         System.out.println("\nINSERTAR");
-        System.out.print("Nombre: ");
-        String nombre = scanner.next();
+        String nombre;
         String tipo = "";
         String nombreCarpeta;
         int tipoOpcion;
 
+        System.out.print("Nombre: ");
+        nombre = scanner.next();
+
         do {
-            System.out.println("\nTipo de archivo\n1. archivo\n2. carpeta");
+            System.out.println("\nTipo de archivo." +
+                    "\n1. Archivo" +
+                    "\n2. Carpeta");
             tipoOpcion = scanner.nextInt();
-            if (tipoOpcion == 1) {
-                tipo = "Archivo";
-            } else if (tipoOpcion == 2) {
-                tipo = "Carpeta";
-            } else {
-                System.out.println("Este tipo de dato no existe");
+
+            switch (tipoOpcion) {
+                case 1:
+                    tipo = "Archivo";
+                    break;
+                case 2:
+                    tipo = "Carpeta";
+                    break;
+                default:
+                    System.out.println("Este tipo de dato no existe");
+                    break;
             }
         } while (tipoOpcion != 1 && tipoOpcion != 2);
 

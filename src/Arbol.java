@@ -1,4 +1,4 @@
-import java.util.Objects;
+import java.util.*;
 
 public class Arbol {
     private Nodo raiz;
@@ -30,9 +30,18 @@ public class Arbol {
         }
     }
 
-    // Muestra el árbol en orden alfabetico.
+    // Muestra el arbol en orden alfabetico.
     public void ordenAlfabetico() {
-        this.ordenAlfabetico(this.raiz);
+        List<Nodo> nodos = new ArrayList<>();
+        recogerNodos(this.raiz, nodos);
+
+        // Ordena la lista de nodos alfabeticamente por nombre
+        nodos.sort(Comparator.comparing(Nodo::getNombre));
+
+        // Imprime los nodos en orden alfabetico
+        for (Nodo nodo : nodos) {
+            System.out.println(nodo.getNombre() + " (" + nodo.getTipo() + ")");
+        }
     }
 
     // Cuenta la cantidad de archivos y carpetas en el árbol.
@@ -42,19 +51,18 @@ public class Arbol {
 
     // Métodos privados
 
-    // Metodo recursivo para buscar un nodo en el árbol
+    // buscar un nodo en el arbol sin considerar el orden
     private boolean existe(Nodo nodo, String busqueda) {
         if (nodo == null) {
             return false;
         }
         if (Objects.equals(nodo.getNombre(), busqueda)) {
             return true;
-        } else if (busqueda.compareTo(nodo.getNombre()) < 0) {
-            return existe(nodo.getIzquierda(), busqueda);
-        } else {
-            return existe(nodo.getDerecha(), busqueda);
         }
+        // Busca en ambos subarboles sin seguir un orden específico
+        return existe(nodo.getIzquierda(), busqueda) || existe(nodo.getDerecha(), busqueda);
     }
+
 
     // Inserta en una carpeta seleccionada si hay espacio disponible
     private void insertarEnCarpeta(Nodo carpeta, String nombre, String tipo) {
@@ -80,15 +88,19 @@ public class Arbol {
         if (nodo == null) {
             return null;
         }
+
+        // si el nodo actual tiene el mismo nombre especificado y ademas si su tipo es "Carpeta".
         if (nodo.getNombre().equals(nombreCarpeta) && nodo.getTipo().equals("Carpeta")) {
             return nodo;
         }
 
+        //busca sub arbol izquierdo
         Nodo izquierda = buscarCarpeta(nodo.getIzquierda(), nombreCarpeta);
         if (izquierda != null) {
             return izquierda;
         }
 
+        //Busca sub arbol derecho
         return buscarCarpeta(nodo.getDerecha(), nombreCarpeta);
     }
 
@@ -122,12 +134,13 @@ public class Arbol {
         return carpetaExiste(nodo.getIzquierda(), nombre) || carpetaExiste(nodo.getDerecha(), nombre);
     }
 
-    // Muestra el nodo actual empezando por el subarbol izquierdo y despues el derecho
-    private void ordenAlfabetico(Nodo nodo) {
+    // recorrer el arbol y recoger los nodos en la lista
+    private void recogerNodos(Nodo nodo, List<Nodo> nodos) {
         if (nodo != null) {
-            ordenAlfabetico(nodo.getIzquierda());
-            System.out.println(nodo.getNombre() + " (" + nodo.getTipo() + ")");
-            ordenAlfabetico(nodo.getDerecha());
+            nodos.add(nodo);
+            // izquierda y derecha
+            recogerNodos(nodo.getIzquierda(), nodos);
+            recogerNodos(nodo.getDerecha(), nodos);
         }
     }
 

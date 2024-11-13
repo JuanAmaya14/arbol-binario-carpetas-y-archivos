@@ -25,7 +25,7 @@ public class Main {
                     "\n3. Todos los archivos y carpetas en orden alfabetico" +
                     "\n4. Total de archivos y carpetas" +
                     "\n5. Mostrar estructura del arbol" +
-                    "\n6. Salir\"");
+                    "\n6. Salir");
             System.out.print("Ingrese una opcion: ");
             opcion = scanner.nextInt();
 

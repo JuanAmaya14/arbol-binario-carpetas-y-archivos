@@ -100,6 +100,8 @@ public class Arbol {
         } else {
             carpeta.setDerecha(nuevoNodo);
         }
+
+        System.out.println(nuevoNodo.getTipo() + " de nombre " + nuevoNodo.getNombre() + " se inserto correctamente en la carpeta " + carpeta.getNombre());
     }
 
     // Metodo para buscar una carpeta especifica

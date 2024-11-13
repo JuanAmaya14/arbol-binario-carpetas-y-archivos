@@ -7,21 +7,29 @@ public class Arbol {
         this.raiz = null;
     }
 
-    // Verifica si existe un archivo o carpeta en el árbol
+    public Nodo getRaiz() {
+        return raiz;
+    }
+
+    // Verifica si existe un archivo en el arbol
     public boolean existe(String busqueda) {
         return existe(this.raiz, busqueda);
     }
 
     // Inserta un nuevo archivo o carpeta, pidiendo seleccion de carpeta
     public void insertar(String nombre, String tipo, String nombreCarpeta) {
+        // si NO existe un nodo padre
         if (this.raiz == null) {
+            // el nodo padre si o si debe de ser una carpeta
             if (tipo.equals("Carpeta")) {
                 this.raiz = new Nodo(nombre, tipo);
             } else {
                 System.out.println("Primero debe insertar una carpeta raiz.");
             }
         } else {
+            // si ya existe un nodo padre entonces busca la carpeta para insertar otra carpeta o archivo
             Nodo carpetaSeleccionada = buscarCarpeta(this.raiz, nombreCarpeta);
+            // mira si la carpeta existe
             if (carpetaSeleccionada == null || !carpetaSeleccionada.getTipo().equals("Carpeta")) {
                 System.out.println("La carpeta especificada no existe.");
                 return;
@@ -49,27 +57,38 @@ public class Arbol {
         return contarNodos(this.raiz);
     }
 
+    // imprimir la estructura del arbol en su orden de jerarquía
+    public void imprimirEstructura() {
+        imprimirEstructura(this.raiz, 0);
+    }
+
+
     // Métodos privados
 
     // buscar un nodo en el arbol sin considerar el orden
     private boolean existe(Nodo nodo, String busqueda) {
+        // si el nodo no exite devuelve falso
         if (nodo == null) {
             return false;
         }
+        // si existe devuelve verdadero
         if (Objects.equals(nodo.getNombre(), busqueda)) {
             return true;
         }
-        // Busca en ambos subarboles sin seguir un orden específico
+        // Busca en ambos subarboles sin seguir un orden específico usando recursividad
         return existe(nodo.getIzquierda(), busqueda) || existe(nodo.getDerecha(), busqueda);
     }
 
 
     // Inserta en una carpeta seleccionada si hay espacio disponible
     private void insertarEnCarpeta(Nodo carpeta, String nombre, String tipo) {
+        // mira si la carpeta esta llena (tiene 2 hijos)
         if (carpeta.getIzquierda() != null && carpeta.getDerecha() != null) {
             System.out.println("La carpeta esta llena");
             return;
         }
+
+        // no pueden haber archivos o carpetas con el mismo nombre
         if ((tipo.equals("Archivo") && archivoExiste(nombre)) || (tipo.equals("Carpeta") && carpetaExiste(nombre))) {
             System.out.println("Ya existe un " + tipo + " con el mismo nombre");
             return;
@@ -100,7 +119,7 @@ public class Arbol {
             return izquierda;
         }
 
-        //Busca sub arbol derecho
+        //Busca sub arbol derecho usando recursividad
         return buscarCarpeta(nodo.getDerecha(), nombreCarpeta);
     }
 
@@ -138,7 +157,7 @@ public class Arbol {
     private void recogerNodos(Nodo nodo, List<Nodo> nodos) {
         if (nodo != null) {
             nodos.add(nodo);
-            // izquierda y derecha
+            // izquierda y derecha usando recusividad
             recogerNodos(nodo.getIzquierda(), nodos);
             recogerNodos(nodo.getDerecha(), nodos);
         }
@@ -148,6 +167,25 @@ public class Arbol {
         if (nodo == null) {
             return 0;
         }
+        //recorre los nodos de izquierda a derecha usando recursividad y los va contando
         return 1 + contarNodos(nodo.getIzquierda()) + contarNodos(nodo.getDerecha());
+    }
+
+    private void imprimirEstructura(Nodo nodo, int nivel) {
+        if (nodo == null) {
+            return;
+        }
+
+        // Indentacion basada en el nivel de profundidad
+        for (int i = 0; i < nivel; i++) {
+            System.out.print("    ");
+        }
+
+        // Imprime el nombre y tipo del nodo actual
+        System.out.println(nodo.getNombre() + " (" + nodo.getTipo() + ")");
+
+        // Llama recursivamente para los subnodos izquierdo y derecho
+        imprimirEstructura(nodo.getIzquierda(), nivel + 1);
+        imprimirEstructura(nodo.getDerecha(), nivel + 1);
     }
 }

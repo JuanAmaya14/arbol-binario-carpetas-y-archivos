@@ -1,6 +1,18 @@
 import java.util.Scanner;
 
+/**
+ * Clase principal que contiene el metodo main y el menu interactivo
+ * para la gestion de archivos y carpetas en un arbol binario.
+ *
+ * @author Juan Amaya
+ * @author Melisa Acevedo
+ */
 public class Main {
+    /**
+     * Metodo principal que ejecuta el programa.
+     *
+     * @param args Argumentos de la linea de comandos.
+     */
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         Arbol arbol = new Arbol();
@@ -16,6 +28,13 @@ public class Main {
         Menu(scanner, arbol);
     }
 
+    /**
+     * Muestra un menu interactivo para que el usuario realice diferentes acciones
+     * sobre el arbol de archivos y carpetas.
+     *
+     * @param scanner Objeto Scanner para leer la entrada del usuario.
+     * @param arbol Objeto Arbol que contiene la estructura de archivos y carpetas.
+     */
     private static void Menu(Scanner scanner, Arbol arbol) {
         int opcion;
         do {
@@ -57,6 +76,12 @@ public class Main {
         } while (opcion != 6);
     }
 
+    /**
+     * Permite buscar un archivo en el arbol.
+     *
+     * @param scanner Objeto Scanner para leer la entrada del usuario.
+     * @param arbol Objeto Arbol donde se realiza la busqueda.
+     */
     private static void buscarArchivo(Scanner scanner, Arbol arbol) {
         System.out.println("\nBUSCAR ARCHIVO");
         System.out.print("Nombre de archivo a buscar: ");
@@ -68,6 +93,12 @@ public class Main {
         }
     }
 
+    /**
+     * Permite insertar un nuevo archivo o carpeta en el arbol.
+     *
+     * @param scanner Objeto Scanner para leer la entrada del usuario.
+     * @param arbol Objeto Arbol donde se realiza la insercion.
+     */
     private static void preInsertado(Scanner scanner, Arbol arbol) {
         System.out.println("\nINSERTAR");
         String nombre;
@@ -102,9 +133,7 @@ public class Main {
             System.out.print("Nombre de la carpeta donde se insertara: ");
             nombreCarpeta = scanner.next();
         } else {
-
             nombreCarpeta = "";
-
         }
         arbol.insertar(nombre, tipo, nombreCarpeta);
     }

@@ -1,1 +1,3 @@
-![arbol binario por defecto](https://github.com/user-attachments/assets/0b6af248-c602-437b-a45e-1d218c8bbd57)
+Arbol de ejemplo:
+![image](https://github.com/user-attachments/assets/73ab8478-9eaf-4bd9-ab7c-3df324e2b69e)
+

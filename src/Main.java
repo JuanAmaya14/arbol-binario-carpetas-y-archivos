@@ -17,14 +17,6 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
         Arbol arbol = new Arbol();
 
-        // Inserciones para prueba rapida
-        arbol.insertar("Carpeta1", "Carpeta", "");
-        arbol.insertar("Carpeta2", "Carpeta", "Carpeta1");
-        arbol.insertar("perro", "Archivo", "Carpeta1");
-        arbol.insertar("gato", "Archivo", "Carpeta2");
-        arbol.insertar("Carpeta3", "Carpeta", "Carpeta2");
-        arbol.insertar("documento", "Archivo", "Carpeta3");
-
         Menu(scanner, arbol);
     }
 
